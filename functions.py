@@ -1,15 +1,15 @@
 from pymavlink import mavutil
 from math import nan
-
+from typing import List
 
 def get_message(connection: mavutil.mavudp, message_type: str = "COMMAND_ACK", just_print: bool = True,
-                is_blocking: bool = True) -> None or str:
+                is_blocking: bool = True):
     print(connection.recv_match(type=message_type, blocking=is_blocking))
     if not just_print:
         return connection.recv_match(type=message_type, blocking=is_blocking)
 
 
-def get_points_from_txt_file(filepath: str) -> list:
+def get_points_from_txt_file(filepath: str) -> List:
     with open(filepath) as file:
         cords = file.read().splitlines()
     print(cords)

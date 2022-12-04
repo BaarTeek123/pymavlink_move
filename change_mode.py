@@ -3,11 +3,12 @@ import os
 from pymavlink import mavutil
 from functions import get_message
 from sys import argv
+from typing import List
 
 
 def change_mode(connection: mavutil.mavudp, mode: str = "GUIDED") -> None:
     if mode not in connection.mode_mapping():
-        raise Exception(f'Unknown mode : {format(mode)}\nTry:', list(connection.mode_mapping().keys()))
+        raise Exception(f'Unknown mode : {format(mode)}\nTry:', List[connection.mode_mapping().keys()])
 
     # Get mode ID
     mode_id = connection.mode_mapping()[mode]
