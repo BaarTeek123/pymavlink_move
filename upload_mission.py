@@ -25,16 +25,16 @@ def upload_mission(connection, mission_items) -> None:
         get_message(connection, message_type="MISSION_REQUEST")
 
 
-if __name__ == '__main__':
-    default_file_path = "/home/bartek/PycharmProjects/mavlink-test/cords.txt"
+default_file_path = "/home/bartek/PycharmProjects/mavlink-test/cords.txt"
+try:
+    file = argv[1]
+    cords = get_points_from_txt_file(argv[1])
+except FileNotFoundError:
+    print("File with coordinates does not exit!")
+except IndexError:
+    cords = get_points_from_txt_file(default_file_path)
 
-    try:
-        file = argv[1]
-        cords = get_points_from_txt_file(argv[1])
-    except FileNotFoundError:
-        print("File with coordinates does not exit!")
-    except IndexError:
-        cords = get_points_from_txt_file(default_file_path)
+if __name__ == '__main__':
 
     connection = mavutil.mavlink_connection('udpin:localhost:14550')
     connection.wait_heartbeat()
