@@ -2,7 +2,7 @@ from pymavlink import mavutil
 from sys import argv
 from functions import mission_item, get_points_from_txt_file, get_message
 from change_mode import change_mode
-
+import os
 
 def upload_mission(connection, mission_items) -> None:
     connection.mav.mission_count_send(connection.target_system, connection.target_component, len(mission_items), 0)
@@ -36,8 +36,10 @@ except IndexError:
 
 if __name__ == '__main__':
 
-    connection = mavutil.mavlink_connection('udpin:localhost:14550')
-    connection.wait_heartbeat()
+    if os.uname().machine == "x86_64":
+        connection = mavutil.mavlink_connection('udpin:localhost:14550')
+    else:
+        connection = mavutil.mavlink_connection('dev/ttyTHS1')
     print(f"Connection established.\nSystem: {connection.target_system}\nComponent: {connection.target_component}")
 
     # change mode

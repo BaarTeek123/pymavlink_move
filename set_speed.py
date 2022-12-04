@@ -1,7 +1,7 @@
 from pymavlink import mavutil
 from functions import get_message
 from sys import argv
-
+import os
 
 def set_speed(connection: mavutil.mavudp, speed: int) -> None:
     connection.mav.command_long_send(connection.target_system, connection.target_component,
@@ -10,8 +10,10 @@ def set_speed(connection: mavutil.mavudp, speed: int) -> None:
 
 if __name__ == "__main__":
     # establish connection
-    connection = mavutil.mavlink_connection('udpin:localhost:14550')
-    connection.wait_heartbeat()
+    if os.uname().machine == "x86_64":
+        connection = mavutil.mavlink_connection('udpin:localhost:14550')
+    else:
+        connection = mavutil.mavlink_connection('dev/ttyTHS1')
     print(f"Connection established.\nSystem: {connection.target_system}\nComponent: {connection.target_component}")
 
     try:

@@ -7,6 +7,11 @@ from time import sleep
 
 os.environ["MAVLINK20"] = '1'
 if __name__ == '__main__':
+    if os.uname().machine == "x86_64":
+        connection = mavutil.mavlink_connection('udpin:localhost:14550')
+    else:
+        connection = mavutil.mavlink_connection('dev/ttyTHS1')
+
     try:
         is_come_back = bool(argv[1])
     except IndexError:
@@ -19,7 +24,7 @@ if __name__ == '__main__':
         print("START")
         # const
         take_off_distance = 10
-        txt_file_with_points = "/home/bartek/PycharmProjects/akl_piwo_1/cords.txt"
+        txt_file_with_points = "./cords.txt"
         speed = 100  # :)))
         # upload mission
         os.system(f"python3.10 /home/bartek/PycharmProjects/akl_piwo_1/upload_mission.py {txt_file_with_points}")

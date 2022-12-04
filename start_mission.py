@@ -1,6 +1,6 @@
 from functions import get_message
 from pymavlink import mavutil
-
+import os
 
 def start_mission(connection):
     connection.mav.command_long_send(connection.target_system, connection.target_component,
@@ -8,7 +8,10 @@ def start_mission(connection):
 
 
 if __name__ == '__main__':
-    connection = mavutil.mavlink_connection('udpin:localhost:14550')
+    if os.uname().machine == "x86_64":
+        connection = mavutil.mavlink_connection('udpin:localhost:14550')
+    else:
+        connection = mavutil.mavlink_connection('dev/ttyTHS1')
     connection.wait_heartbeat()
     msg = get_message(connection, message_type="LOCAL_POSITION_NED", just_print=False)
     if not connection.motors_armed():

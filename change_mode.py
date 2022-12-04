@@ -1,3 +1,5 @@
+import os
+
 from pymavlink import mavutil
 from functions import get_message
 from sys import argv
@@ -19,7 +21,12 @@ def change_mode(connection: mavutil.mavudp, mode: str = "GUIDED") -> None:
 
 if __name__ == "__main__":
     # establish connection
-    connection = mavutil.mavlink_connection('udpin:localhost:14550')
+    if os.uname().machine == "x86_64":
+        connection = mavutil.mavlink_connection('udpin:localhost:14550')
+    else:
+        connection = mavutil.mavlink_connection('dev/ttyTHS1')
+
+
     connection.wait_heartbeat()
     print(f"Connection established.\nSystem: {connection.target_system}\nComponent: {connection.target_component}")
     try:

@@ -3,7 +3,7 @@ from functions import get_message
 from change_mode import change_mode
 from arm import arm
 from sys import argv
-
+import os
 
 def take_off(connection: mavutil.mavudp, distance: int = 10) -> None:
     connection.mav.command_long_send(connection.target_system, connection.target_component,
@@ -22,10 +22,10 @@ if __name__ == "__main__":
         print("Invalid type of value. Variable distance is set to 10 [m].")
         distance = 10
     finally:
-        # establish connection
-        connection = mavutil.mavlink_connection('udpin:localhost:14550')
-        connection.wait_heartbeat()
-        print(f"Connection established.\nSystem: {connection.target_system}\nComponent: {connection.target_component}")
+        if os.uname().machine == "x86_64":
+            connection = mavutil.mavlink_connection('udpin:localhost:14550')
+        else:
+            connection = mavutil.mavlink_connection('dev/ttyTHS1')
 
         # change mode
         while True:
